@@ -1,0 +1,24 @@
+OrderID,CustomerName,OrderDate,Product,Quantity,Price,Discount,Region,PaymentMethod,ShippingAddress,IsPremiumCustomer,OrderStatus,DeliveryDate,CustomerID,Category,ReturnStatus,ShipmentTrackingID,Tax,PromoCode
+1001,John Doe,2023-05-12,Laptop,1,1200.50,0.05,North,Credit Card,"123 Main St, North City",TRUE,Shipped,2023-05-15,5001,Electronics,No,TRACK123456,90.04,SPRING10
+1002,Jane Smith,2023-04-28,Smartphone,2,850.00,,East,Paypal,"456 Elm St, East City",FALSE,Delivered,2023-05-01,5002,Electronics,No,TRACK123457,68.00,SUMMER15
+1003,Bob Johnson,2023-06-15,Tablet,5,300.75,0.10,West,Debit Card,"789 Pine St, West Town",TRUE,Processing,,5003,Electronics,No,TRACK123458,25.06,AUTUMN5
+1004,Alice Brown,2023-07-03,Monitor,3,450.00,0.00,South,Credit Card,"321 Oak St, South Village",FALSE,Shipped,2023-07-06,5004,Electronics,Yes,TRACK123459,36.00,WINTER20
+1005,Charlie Davis,2023-08-21,Headphones,10,150.25,0.15,North,Bank Transfer,"654 Maple St, North City",TRUE,Delivered,2023-08-24,5005,Accessories,No,TRACK123460,12.02,SPRING10
+1006,Eva Green,2023-09-10,Keyboard,4,99.99,0.00,East,Credit Card,"987 Cedar St, East City",FALSE,Cancelled,,5006,Accessories,No,TRACK123461,8.00,SUMMER15
+1007,Frank White,2023-10-02,Mouse,6,45.50,0.05,West,Paypal,"741 Birch St, West Town",TRUE,Delivered,2023-10-05,5007,Accessories,No,TRACK123462,3.64,AUTUMN5
+1008,Grace Lee,2023-11-17,Smartwatch,1,300.00,0.00,South,Debit Card,"852 Spruce St, South Village",FALSE,Processing,,5008,Electronics,No,TRACK123463,24.00,WINTER20
+1009,Harry Potter,2023-12-01,Printer,2,250.00,0.08,North,Bank Transfer,"123 Wizard St, Magic City",TRUE,Shipped,2023-12-04,5009,Office Supplies,No,TRACK123464,20.00,SPRING10
+1010,Luna Lovegood,2023-12-15,Desk Chair,1,180.00,0.00,East,Credit Card,"456 Quirky Ln, Dream Town",TRUE,Delivered,2023-12-18,5010,Furniture,Yes,TRACK123465,14.40,SUMMER15
+1011,Tony Stark,2023-12-20,Iron Suit,1,9999.99,0.00,West,Credit Card,"10880 Malibu Point, CA",TRUE,Processing,,5011,Custom Gear,No,TRACK123466,799.99,AUTUMN5
+1012,Steve Rogers,2023-12-25,Shield,1,1500.00,0.10,North,Bank Transfer,"Brooklyn, NY",TRUE,Shipped,2023-12-28,5012,Custom Gear,No,TRACK123467,120.00,WINTER20
+1013,Bruce Wayne,2024-01-02,Batmobile,1,500000.00,0.00,East,Credit Card,"Wayne Manor, Gotham",TRUE,Delivered,2024-01-05,5013,Custom Vehicles,Yes,TRACK123468,40000.00,SPRING10
+1014,Diana Prince,2024-01-10,Lasso of Truth,1,500.00,0.00,South,Debit Card,"Themyscira",TRUE,Shipped,2024-01-13,5014,Artifacts,No,TRACK123469,40.00,SUMMER15
+1015,Clark Kent,2024-01-15,Cape,1,300.00,0.05,North,Paypal,"Metropolis",TRUE,Delivered,2024-01-18,5015,Accessories,No,TRACK123470,24.00,AUTUMN5
+1016,Peter Parker,2024-02-01,Web Shooter,2,250.00,0.00,West,Credit Card,"Queens, NY",TRUE,Processing,,5016,Gadgets,No,TRACK123471,20.00,WINTER20
+1017,Natasha Romanoff,2024-02-14,Spy Gear,3,750.00,0.00,East,Paypal,"Moscow",TRUE,Delivered,2024-02-17,5017,Equipment,Yes,TRACK123472,60.00,SPRING10
+1018,Thor Odinson,2024-02-20,Stormbreaker,1,100000.00,0.00,South,Debit Card,"Asgard",TRUE,Shipped,2024-02-23,5018,Weapons,No,TRACK123473,8000.00,SUMMER15
+1019,Loki Laufeyson,2024-02-25,Scepter,1,5000.00,0.05,North,Bank Transfer,"Jotunheim",TRUE,Delivered,2024-02-28,5019,Artifacts,No,TRACK123474,400.00,AUTUMN5
+1020,Doctor Strange,2024-03-01,Eye of Agamotto,1,2500.00,0.00,East,Credit Card,"Sanctum Sanctorum, NY",TRUE,Processing,,5020,Relics,No,TRACK123475,200.00,WINTER20
+1021,Bilbo Baggins,2024-03-10,One Ring,1,999999.99,0.00,Middle-Earth,Credit Card,"Bag End, The Shire",TRUE,Shipped,2024-03-13,5021,Artifacts,Yes,TRACK123476,79999.99,SPRING10
+1022,Frodo Baggins,2024-03-15,Sting,1,5000.00,0.00,Middle-Earth,Bank Transfer,"Rivendell",TRUE,Delivered,2024-03-18,5022,Weapons,No,TRACK123477,400.00,SUMMER15
+

@@ -39,62 +39,45 @@ This project is an automated data science platform designed to streamline data c
     ```
 
 3. Install the required dependencies:
+    
+    Not done write requiremnt.txt 
 
     ```bash
-    pip install -r requirements.txt
+    pip install -e .
     ```
-
+    When run any thing missing install it 
 4. Create a `.env` file and add your API keys:
-
-    ```bash
-    cp .env.example .env
-    ```
-
-    Update the `.env` file with your API keys.
+    
+    need GOOGLE_API_KEY
 
 ### Running the Application
 
 1. Start the FastAPI server:
 
     ```bash
-    uvicorn app:app --reload
+    python3 app.py
     ```
 
-2. Open your browser and navigate to `http://localhost:5000`.
+2. Start streamlit
+    
+    ```bash
+    streamlit run streamlit.py
+    ```
 
+go to streamlit ui and mess around
 ## Usage
 
 ### Uploading a Dataset
 
-1. Go to the upload section and choose a CSV or Excel file to upload.
+1. Go to the upload section and choose a CSV  to upload or use test.csv data.
 2. The platform will process the data, clean it, and provide a preview of the cleaned data.
 3. It will also generate a statistical summary, ERD, and various visualizations.
-
+4. That shit take time be peition
 ### Interactive Chat
 
 1. Use the chat interface to ask questions about your dataset.
 2. The platform will analyze your query and provide insights based on the data.
-
-## Project Structure
-
-- `app.py`: Main FastAPI application file.
-- `src/react_agent`: Contains the core logic for data cleaning, statistical analysis, and visualization.
-- `src/react_agent/state.py`: Defines the state structures for the agent.
-- `src/react_agent/prompts.py`: Contains prompt templates for various tasks.
-- `src/react_agent/graph.py`: Defines the custom Reasoning and Action agent.
-- `src/react_agent/node`: Contains the nodes for different tasks like data cleaning, statistical analysis, etc.
-- `llm`: Contains additional logic for language model interactions.
-- `Makefile`: Contains commands for testing, linting, and formatting.
-- `pyproject.toml`: Project configuration file.
-- `.env.example`: Example environment file.
-
-## Contributing
-
-Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) first.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+3. Use after uloaded file
 
 ## Acknowledgements
 
