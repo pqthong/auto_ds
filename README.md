@@ -8,16 +8,16 @@ This project is an automated data science platform designed to streamline data c
 ## Features
 
 - **Data Cleaning**: Automatically handle missing values, detect and remove duplicates, normalize text columns, convert date columns, and handle outliers.
-![image info](./doc/1.png)
+![image](./doc/1.png)
 - **Statistical Analysis**: Generate detailed statistical summaries, including descriptive statistics, correlation matrices, skewness, kurtosis, and outlier detection.
-![image info](./doc/3.png)
+![image](./doc/3.png)
 
 - **Data Visualization**: Suggest and generate various chart types to visualize the dataset effectively.
-![image info](./doc/4.png)
+![image](./doc/4.png)
 - **Entity Relationship Diagram (ERD)**: Generate ERDs from SQL schema.
-![image info](./doc/2.png)
+![image](./doc/2.png)
 - **Interactive Chat**: Ask questions about your dataset and get insights through an interactive chat interface.
-![image info](./doc/5.png)
+![image](./doc/5.png)
 
 ## Setup
 
