@@ -34,6 +34,8 @@ app.add_middleware(
 
 class QueryRequest(BaseModel):
     query: str
+    dataframe: str
+
 
 # Route to create a chart based on user text
 @app.post("/upload/")
@@ -77,6 +79,7 @@ async def upload_file(file: UploadFile = File(...)):
 @app.post("/chat/")
 async def chat(request: QueryRequest):
     user_query = request.query
+    df = pd.read_json(io.StringIO(request.dataframe))
 
     # Simulate analysis (replace with actual LLM call if needed)
     if not user_query.strip():
@@ -88,7 +91,8 @@ async def chat(request: QueryRequest):
 
     # Run LangGraph Workflow
     result = await chat_graph.ainvoke(ChatState(
-        messages=[user_query]
+        messages=[user_query],
+        df=df
     ), config=config)
 
 

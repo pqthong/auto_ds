@@ -10,6 +10,10 @@ import re
 import sqlparse
 from graphviz import Digraph
 
+# Ensure session state is initialized
+if "generated_graphs" not in st.session_state:
+    st.session_state.generated_graphs = []
+
 def parse_sql_to_erd(sql):
     statements = sqlparse.parse(sql)
     tables = {}
@@ -57,7 +61,7 @@ def generate_erd(sql):
 
 st.set_page_config(page_title="Automated Data Science", layout="wide")
 
-st.title("Automated Data Cleaning and Visualization")
+st.title("Automated Data Science")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -87,21 +91,51 @@ with col1:
 
         with st.chat_message("user"):
             st.markdown(user_input)
+        if st.session_state.upload_result:
+            cleaned_data = pd.read_csv(io.StringIO(st.session_state.upload_result["cleaned_data"]))
+            data_json = cleaned_data.to_json(orient="records")
 
-        chat_url = "http://localhost:5000/chat/"
-        chat_response = requests.post(chat_url, json={"query": user_input})
+            chat_url = "http://localhost:5000/chat/"
+            chat_response = requests.post(chat_url, json={"query": user_input,
+                                                          "dataframe": data_json
+                                                          })
 
-        if chat_response.status_code == 200:
-            response_data = chat_response.json()
-            assistant_message = response_data.get("answer", "I am analyzing your dataset...")
+            if chat_response.status_code == 200:
+                response_data = chat_response.json()
+                assistant_message = response_data.get("answer", "I am analyzing your dataset...")
+            else:
+                assistant_message = "Error retrieving insights. Please try again."
+
+            if "```json" in assistant_message:
+                assistant_message = json.loads(assistant_message.replace("```json", "").replace("```", ""))
+                visualizations = assistant_message.get("visualizations", [])
+                assistant_message = assistant_message.get("answer", "I am analyzing your dataset...")
+                graph = []
+                for idx, code in enumerate(visualizations):
+                    try:
+                        code = code.replace("```python", "").replace("```", "")
+                        pattern = r"def\s+(\w+)\s*\("
+                        match = re.search(pattern, code)
+                        function_name = match.group(1)
+
+                        local_env = {"df": cleaned_data, "plt": plt, "sns": sns, "pd": pd}
+                        exec(code, local_env)
+                        local_env[function_name](cleaned_data)
+                        fig = plt.gcf()
+                        graph.append(fig)
+                        # Display cached graphs from session state
+                    except Exception as e:
+                        pass
+            st.session_state.messages.append({"role": "assistant", "content": assistant_message})
+            st.session_state.chat_responses.append(assistant_message)
+            with st.chat_message("assistant"):
+                st.markdown(assistant_message)
+                for idx, fig in enumerate(graph):   
+                    st.pyplot(fig)
         else:
-            assistant_message = "Error retrieving insights. Please try again."
-
-        st.session_state.messages.append({"role": "assistant", "content": assistant_message})
-        st.session_state.chat_responses.append(assistant_message)
-
-        with st.chat_message("assistant"):
-            st.markdown(assistant_message)
+            assistant_message = "Upload some file first to get insights."
+            with st.chat_message("assistant"):
+                st.markdown(assistant_message)
 
 with col2:
     uploaded_file = st.file_uploader("Choose a file (CSV/Excel)", type=["csv", "xlsx"])
@@ -144,23 +178,27 @@ with col2:
         st.write(result["statistical_summary"], expanded=False)
 
         st.write("### Generated Graphs")
-        graphs_code = result.get("graphs_code", [])[0].replace("```python", "").replace("```", "")
-        graphs_code = ast.literal_eval(graphs_code)
+        if not st.session_state.generated_graphs:
+            graphs_code = result.get("graphs_code", [])[0].replace("```python", "").replace("```", "")
+            graphs_code = ast.literal_eval(graphs_code)
 
-        for idx, code in enumerate(graphs_code):
-            try:
-                code = code.replace("```python", "").replace("```", "")
-                st.write(f"#### Graph {idx + 1}")
+            for idx, code in enumerate(graphs_code):
+                try:
+                    code = code.replace("```python", "").replace("```", "")
+                    pattern = r"def\s+(\w+)\s*\("
+                    match = re.search(pattern, code)
+                    function_name = match.group(1)
 
-                pattern = r"def\s+(\w+)\s*\("
-                match = re.search(pattern, code)
-                function_name = match.group(1)
-
-                local_env = {"df": cleaned_data, "plt": plt, "sns": sns, "pd": pd}
-                exec(code, local_env)
-                local_env[function_name](cleaned_data)
-                st.pyplot(plt.gcf())
-            except Exception as e:
-                st.error(f"Error rendering graph {idx + 1}: {e}")
-
+                    local_env = {"df": cleaned_data, "plt": plt, "sns": sns, "pd": pd}
+                    exec(code, local_env)
+                    local_env[function_name](cleaned_data)
+                    fig = plt.gcf()
+                    st.session_state.generated_graphs.append(fig)
+                    # Display cached graphs from session state
+                except Exception as e:
+                    pass
+        for idx, fig in enumerate(st.session_state.generated_graphs):
+            st.write(f"#### Graph {idx + 1}")
+            st.pyplot(fig)
+            
 

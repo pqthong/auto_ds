@@ -47,6 +47,10 @@ class ChatState(InputState):
     """
 
     is_last_step: IsLastStep = field(default=False)
+    df: pd.DataFrame = field(default=None)
+    code: List[str] = field(default_factory=list)
+    insights: str = field(default=None)
+    graph: str = field(default=None)
     """
     Indicates whether the current step is the last one before the graph raises an error.
 

@@ -15,7 +15,8 @@ from react_agent.configuration import Configuration
 from chat_graph.state import  ChatState
 from react_agent.tools import TOOLS
 from react_agent.utils import load_chat_model
-from chat_graph.node.initial_chat_node import basic_chat
+from chat_graph.node.initial_chat_node import pd_gen_chat
+from chat_graph.node.pandas_exec import pandas_exec
 # Define the function that calls the model
 from langgraph.checkpoint.memory import MemorySaver
 
@@ -24,12 +25,13 @@ from langgraph.checkpoint.memory import MemorySaver
 builder = StateGraph(ChatState, config_schema=Configuration)
 
 # Define the two nodes we will cycle between
-builder.add_node(basic_chat)
+builder.add_node(pd_gen_chat)
+builder.add_node(pandas_exec)
 
-
-builder.add_edge("__start__", "basic_chat")
+builder.add_edge("__start__", "pd_gen_chat")
+builder.add_edge("pd_gen_chat", "pandas_exec")
 builder.add_edge(
-    "basic_chat",
+    "pandas_exec",
     "__end__"
 )
 
