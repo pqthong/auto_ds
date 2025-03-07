@@ -38,24 +38,25 @@ class QueryRequest(BaseModel):
 
 # Route to create a chart based on user text
 @app.post("/upload/")
-async def upload_file(file: UploadFile = File(...)):
-    # Read Excel or CSV File
-    print (f'filename{ file.filename}')
-    contents = await file.read()
-    # Check if file is CSV or Excel
-    print (f'filename{ file.filename}')
-    if file.filename.endswith('.csv'):
-        df = pd.read_csv(io.BytesIO(contents))
-    else:
-        # Explicitly specify the engine to handle Excel file formats
-        try:
-            df = pd.read_excel(io.BytesIO(contents), engine='openpyxl')  # For .xlsx files
-        except Exception as e:
+async def upload_file(files: list[UploadFile] = File(...)):
+    dataframes = []
+    for file in files:
+        # Read Excel or CSV File
+        print(f'filename: {file.filename}')
+        contents = await file.read()
+        # Check if file is CSV or Excel
+        if file.filename.endswith('.csv'):
+            df = pd.read_csv(io.BytesIO(contents))
+        else:
+            # Explicitly specify the engine to handle Excel file formats
             try:
-                df = pd.read_excel(io.BytesIO(contents), engine='xlrd')  # For older .xls files
-            except Exception as inner_error:
-                return {"error": f"Error reading Excel file: {inner_error}"}
-
+                df = pd.read_excel(io.BytesIO(contents), engine='openpyxl')  # For .xlsx files
+            except Exception as e:
+                try:
+                    df = pd.read_excel(io.BytesIO(contents), engine='xlrd')  # For older .xls files
+                except Exception as inner_error:
+                    return {"error": f"Error reading Excel file: {inner_error}"}
+        dataframes.append(df)
 
 
     # Create a config with additional message
@@ -63,7 +64,7 @@ async def upload_file(file: UploadFile = File(...)):
 
     # Run LangGraph Workflow
     result = await graph.ainvoke(State(
-        original_data=df,
+        original_data=dataframes[0],
         messages=["Initial message: Data uploaded."]
     ), config=config)
 
