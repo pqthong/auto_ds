@@ -1,5 +1,3 @@
-
-
 # Automated Data Science Platform
 
 This project is an automated data science platform designed to streamline data cleaning, statistical analysis, and visualization using advanced machine learning models and tools. The platform leverages LangGraph, LangChain, and other libraries to provide a comprehensive solution for data analysis.
@@ -22,9 +20,9 @@ This project is an automated data science platform designed to streamline data c
 
 ### Prerequisites
 
-- Python 3.11 or higher
-- Google gemini key ( because it is cheap , dont ask)
-
+- Docker
+- Docker Compose
+- Google gemini key (because it is cheap, don't ask)
 
 ### Installation
 
@@ -35,53 +33,42 @@ This project is an automated data science platform designed to streamline data c
     cd data_analyzer/auto_ds
     ```
 
-2. Create a virtual environment and activate it:
+2. Create a `.env` file in the root directory and add your API keys:
 
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```plaintext
+    GOOGLE_API_KEY=your_google_api_key_here
     ```
-
-3. Install the required dependencies:
-    
-    Not done write requiremnt.txt 
-
-    ```bash
-    pip install -e .
-    ```
-    When run any thing missing install it 
-4. Create a `.env` file and add your API keys:
-    
-    need GOOGLE_API_KEY
 
 ### Running the Application
 
-1. Start the FastAPI server:
+1. Build and start the Docker containers:
 
     ```bash
-    python3 app.py
+    docker-compose up --build
     ```
 
-2. Start streamlit
-    
-    ```bash
-    streamlit run streamlit.py
-    ```
+2. Access the Streamlit frontend:
 
-go to streamlit ui and mess around
-## Usage
+    Open your browser and go to `http://localhost:8501`
 
-### Uploading a Dataset
+3. The backend FastAPI server will be running at:
 
-1. Go to the upload section and choose a CSV  to upload or use test.csv data.
+    `http://localhost:5000`
+
+### Usage
+
+#### Uploading a Dataset
+
+1. Go to the upload section and choose a CSV to upload or use test.csv data.
 2. The platform will process the data, clean it, and provide a preview of the cleaned data.
 3. It will also generate a statistical summary, ERD, and various visualizations.
-4. That shit take time be peition
-### Interactive Chat
+4. Be patient as this process may take some time.
+
+#### Interactive Chat
 
 1. Use the chat interface to ask questions about your dataset.
 2. The platform will analyze your query and provide insights based on the data.
-3. Use after uloaded file
+3. Ensure you have uploaded a file before using the chat feature.
 
 ## Acknowledgements
 
@@ -90,4 +77,3 @@ go to streamlit ui and mess around
 - [Tavily](https://tavily.com/)
 - [Anthropic](https://console.anthropic.com/)
 - [OpenAI](https://platform.openai.com/)
-

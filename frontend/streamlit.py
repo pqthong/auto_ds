@@ -95,7 +95,7 @@ with col1:
             cleaned_data = pd.read_csv(io.StringIO(st.session_state.upload_result["cleaned_data"]))
             data_json = cleaned_data.to_json(orient="records")
 
-            chat_url = "http://localhost:5000/chat/"
+            chat_url = "http://backend:5000/chat/"
             chat_response = requests.post(chat_url, json={"query": user_input,
                                                           "dataframe": data_json
                                                           })
@@ -155,7 +155,7 @@ with col2:
 
         st.info("Processing data. Please wait...")
         data = uploaded_file.getvalue()
-        url = "http://localhost:5000/upload/"
+        url = "http://backend:5000/upload/"
         files = {"file": (uploaded_file.name, data, "text/csv")}
 
         response = requests.post(url, files=files)
