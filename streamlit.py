@@ -13,20 +13,22 @@ from utils import parse_sql_to_erd, generate_erd
 from chat import handle_chat
 from file_upload import handle_file_upload, display_generated_graphs
 import asyncio
+from logger import logger  # Import the logger
 
 
 def display_resutl(result):
-        cleaned_data = result["cleaned_data"]
-        st.write("### Cleaned Data Preview")
-        st.dataframe(cleaned_data)
-        st.write("### Entity Relationship Diagram (ERD)")
-        erd = generate_erd(result["sql"].replace("```sql", "").replace("```", ""))
-        st.graphviz_chart(erd)
+    logger.info(f"Displaying result: {result}")  # Add logging
+    cleaned_data = result["cleaned_data"]
+    st.write("### Cleaned Data Preview")
+    st.dataframe(cleaned_data)
+    st.write("### Entity Relationship Diagram (ERD)")
+    erd = generate_erd(result["sql"].replace("```sql", "").replace("```", ""))
+    st.graphviz_chart(erd)
 
-        st.write("### Statistical Summary")
-        st.write(result["insights"], expanded=False)
+    st.write("### Statistical Summary")
+    st.write(result["insights"], expanded=False)
 
-        display_generated_graphs(result["cleaned_data"], result)
+    display_generated_graphs(result["cleaned_data"], result)
 
 
 # Ensure session state is initialized
@@ -73,6 +75,7 @@ with col2:
 
         if st.session_state.upload_result is None:
             async def process_upload():
+                logger.info(f"Processing file upload: {uploaded_files.name}")  # Add logging
                 result = await handle_file_upload(uploaded_files)
                 st.session_state.upload_result = result
                 display_resutl(result)
@@ -82,4 +85,4 @@ with col2:
             display_resutl(result)
 
 
-            
+

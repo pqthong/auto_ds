@@ -5,12 +5,12 @@ from react_agent.utils import load_chat_model
 from react_agent.configuration import Configuration
 from react_agent.prompts import get_static_analyzer_prompt
 from langchain_core.runnables import RunnableConfig
+from logger import logger  # Import the logger
 
 async def statistical_analyzer(state: State, config: RunnableConfig) -> Dict[str, List[AIMessage]]:
-    """Generates a detailed statistical summary of the dataset using LLM."""
+    logger.info(f"Starting statistical analysis for state: {state}")  # Add logging
     df = state.cleaned_data
 
-    print(f'Starting statistical analysis on data: {df.head(2)}')
     # Generate basic statistical summary
     summary = df.describe(include='all').to_string()
 
@@ -40,6 +40,6 @@ async def statistical_analyzer(state: State, config: RunnableConfig) -> Dict[str
     ], config)
 
     # Update state with the statistical summary and insights
+    logger.info(f"Statistical analysis result: {response.content}")  # Add logging
     code_str = response.content
-    print(f'code_str: {code_str}')
     return {"messages": [response], "code_to_execute": [response.content]}

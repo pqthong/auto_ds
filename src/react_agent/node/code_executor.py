@@ -9,7 +9,6 @@ async def code_executor(state: State, config) -> Dict[str, List[AIMessage]]:
     """Executes the generated cleaning code and updates the cleaned dataset."""
     df = state.original_data
     code = state.code_to_execute[-1].replace("```python","").replace("```","")
-    print(f'Code to execute: {code}')
     try:
         local_env = {"df": df, "pd": pd, "np": np}
         # Execute the function definition
@@ -18,6 +17,5 @@ async def code_executor(state: State, config) -> Dict[str, List[AIMessage]]:
         df_out = local_env["clean_dataframe"](df)
         return {"messages": [AIMessage(content="Data cleaning complete.")],"cleaned_data": df_out} 
     except Exception as e:
-        print(f"Error executing code: {e}")
-
+        pass
     return {"messages": [AIMessage(content="Data cleaning complete.")],"cleaned_data": [state.cleaned_data]} 

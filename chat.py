@@ -10,8 +10,10 @@ from chat_graph.graph import chat_graph
 from chat_graph.state import ChatState
 from langchain_core.runnables import RunnableConfig
 import asyncio
+from logger import logger  # Import the logger
 
 async def get_chat_response(input, df):
+    logger.info(f"Generating chat response for input: {input}")  # Add logging
 
     config = RunnableConfig(metadata={"message": "Starting chat."})
    
@@ -20,6 +22,7 @@ async def get_chat_response(input, df):
         df=df
     ), config=config)
 
+    logger.info(f"Chat response generated: {result}")  # Add logging
 
     assistant_message = result["messages"][-1].content # Include generated graph code}
     if "```json" in assistant_message:
@@ -40,6 +43,7 @@ async def get_chat_response(input, df):
                 fig = plt.gcf()
                 graph.append(fig)
             except Exception as e:
+                logger.error(f"Error generating graph: {e}")  # Add logging
                 pass
         st.session_state.messages.append({"role": "assistant", "content": assistant_message})
         st.session_state.chat_responses.append(assistant_message)
@@ -48,16 +52,14 @@ async def get_chat_response(input, df):
             for idx, fig in enumerate(graph):
                 st.pyplot(fig)
 
-
-
 def handle_chat(user_input, cleaned_data):
+    logger.info(f"Handling chat input: {user_input}")  # Add logging
     st.session_state.messages.append({"role": "user", "content": user_input})
 
     with st.chat_message("user"):
         st.markdown(user_input)
     if st.session_state.upload_result:
         asyncio.run(get_chat_response(user_input, cleaned_data))
-        
     else:
         assistant_message = "Upload some file first to get insights."
         with st.chat_message("assistant"):

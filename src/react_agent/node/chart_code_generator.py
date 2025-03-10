@@ -42,5 +42,4 @@ async def chart_code_generator(state: State, config: RunnableConfig) -> Dict[str
 
     # Update state with the statistical summary and insights
     code_str = response.content
-    print(f'code_str: {code_str}')
     return {"messages": [response],"graphs_code": [code_str]}

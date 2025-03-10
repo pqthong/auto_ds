@@ -10,7 +10,6 @@ async def pd_gen_chat(state: ChatState, config: RunnableConfig) -> Dict[str, Lis
     """Generates a detailed statistical summary of the dataset using LLM."""
 
     df = state.df
-    print(f'Starting statistical analysis on data: {df.head(2)}')
     # Generate basic statistical summary
     summary = df.describe(include='all').to_string()
 

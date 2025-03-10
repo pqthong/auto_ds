@@ -5,10 +5,10 @@ from react_agent.utils import load_chat_model
 from react_agent.configuration import Configuration
 from react_agent.prompts import get_insight
 from langchain_core.runnables import RunnableConfig
-
-
+from logger import logger  # Import the logger
 
 async def insight(state: State, config: RunnableConfig) -> Dict[str, List[AIMessage]]:
+    logger.info(f"Generating insights for state: {state}")  # Add logging
     df = state.cleaned_data
     summary = df.describe(include='all').to_string()
     
@@ -38,5 +38,7 @@ async def insight(state: State, config: RunnableConfig) -> Dict[str, List[AIMess
         {"role": "system", "content": prompt},
         {"role": "user", "content": message}
     ], config)
-    print(f'res: {response.content}')
+    
+    logger.info(f"Insights generated: {response.content}")  # Add logging
+
     return {"messages": [response], "insights": response.content}

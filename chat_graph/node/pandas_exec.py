@@ -13,7 +13,6 @@ async def pandas_exec(state: ChatState, config) -> Dict[str, List[AIMessage]]:
     df = state.df
     summary = df.describe(include='all').to_string()
     code = state.code[-1].replace("```python","").replace("```","")
-    print(f'Code to execute: {code}')
     try:
         local_env = {"df": df, "pd": pd, "np": np}
         # Execute the function definition
@@ -44,10 +43,8 @@ async def pandas_exec(state: ChatState, config) -> Dict[str, List[AIMessage]]:
             {"role": "system", "content": prompt},
             {"role": "user", "content": message}
         ], config)
-        print(f'res: {response.content}')
         return {"messages": [response]}
 
     except Exception as e:
-        print(f"Error executing code: {e}")
-
+        pass
     return {"messages": [AIMessage(content="Data cleaning complete.")]} 

@@ -34,5 +34,4 @@ async def sql_gen(state: State, config: RunnableConfig) -> Dict[str, List[AIMess
         {"role": "system", "content": prompt},
         {"role": "user", "content": message}
     ], config)
-    print(f'res: {response.content}')
     return {"messages": [response], "sql": response.content}

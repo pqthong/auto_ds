@@ -35,5 +35,4 @@ async def graph_suggest(state: State, config: RunnableConfig) -> Dict[str, List[
         {"role": "system", "content": prompt},
         {"role": "user", "content": message}
     ], config)
-    print(f'res: {response.content}')
     return {"messages": [response]}

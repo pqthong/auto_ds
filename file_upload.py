@@ -10,9 +10,10 @@ from langchain_core.runnables import RunnableConfig
 from src.react_agent.graph import graph 
 from chat_graph.graph import chat_graph
 from src.react_agent.state import State
-
+from logger import logger  # Import the logger
 
 async def handle_file_upload(uploaded_file):
+    logger.info(f"File uploaded: {uploaded_file.name}, Type: {uploaded_file.type}")  # Add logging
     
     if uploaded_file.type == "text/csv":
         df = pd.read_csv(uploaded_file)
@@ -21,8 +22,6 @@ async def handle_file_upload(uploaded_file):
 
     st.write(f"### Original Data Preview ({uploaded_file.name})")
     st.dataframe(df)
-
-
 
     config = RunnableConfig(metadata={"message": "Starting data cleaning process."})
 
@@ -34,11 +33,12 @@ async def handle_file_upload(uploaded_file):
 
     st.session_state.upload_result = result
 
-    result = st.session_state.upload_result
+    logger.info(f"File upload result: {result}")  # Add logging
+
     return result
 
-
 def display_generated_graphs(cleaned_data, result):
+    logger.info("Displaying generated graphs")  # Add logging
     st.write("### Generated Graphs")
     if not st.session_state.generated_graphs:
         graphs_code = result.get("graphs_code", [])[0].replace("```python", "").replace("```", "")
@@ -57,6 +57,7 @@ def display_generated_graphs(cleaned_data, result):
                 fig = plt.gcf()
                 st.session_state.generated_graphs.append(fig)
             except Exception as e:
+                logger.error(f"Error generating graph: {e}")  # Add logging
                 pass
     for idx, fig in enumerate(st.session_state.generated_graphs):
         st.write(f"#### Graph {idx + 1}")
