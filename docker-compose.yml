@@ -1,32 +1,6 @@
 version: '3.8'
 
 services:
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: backend
-    ports:
-      - "5000:5000"
-    volumes:
-      - .:/app
-    environment:
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
-    depends_on:
-      - db
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: frontend
-    ports:
-      - "8501:8501"
-    volumes:
-      - ./frontend:/app
-    depends_on:
-      - backend
-
   db:
     image: postgres:13
     container_name: db
@@ -38,6 +12,19 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: streamlit run streamlit.py
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - db
 
 volumes:
   db_data:

@@ -1,6 +1,9 @@
+pandas
+matplotlib
+seaborn
+sqlparse
+graphviz
+streamlit
 langchain_google_genai
-fastapi
-uvicorn
 python-multipart
 dotenv
-pandas

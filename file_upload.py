@@ -6,40 +6,36 @@ import ast
 import re
 import matplotlib.pyplot as plt
 import seaborn as sns
+from langchain_core.runnables import RunnableConfig
+from src.react_agent.graph import graph 
+from chat_graph.graph import chat_graph
+from src.react_agent.state import State
 
-def handle_file_upload(uploaded_files):
-    dataframes = []
-    files = {}
+
+async def handle_file_upload(uploaded_file):
     
-    for uploaded_file in uploaded_files:
-        if uploaded_file.type == "text/csv":
-            df = pd.read_csv(uploaded_file)
-        else:
-            df = pd.read_excel(uploaded_file)
-        dataframes.append(df)
+    if uploaded_file.type == "text/csv":
+        df = pd.read_csv(uploaded_file)
+    else:
+        df = pd.read_excel(uploaded_file)
 
-        st.write(f"### Original Data Preview ({uploaded_file.name})")
-        st.dataframe(df)
+    st.write(f"### Original Data Preview ({uploaded_file.name})")
+    st.dataframe(df)
 
-        data = uploaded_file.getvalue()
-        files[uploaded_file.name] = (uploaded_file.name, data, uploaded_file.type)
 
-    st.info("Processing data. Please wait...")
-    url = "http://backend:5000/upload/"
-    response = requests.post(url, files=files)
 
-    if response.status_code == 200:
-        st.session_state.upload_result = response.json()
+    config = RunnableConfig(metadata={"message": "Starting data cleaning process."})
 
-    if st.session_state.upload_result:
-        result = st.session_state.upload_result
+    # Run LangGraph Workflow
+    result = await graph.ainvoke(State(
+        original_data=df,
+        messages=["Initial message: Data uploaded."]
+    ), config=config)
 
-        cleaned_data = pd.read_csv(io.StringIO(result["cleaned_data"]))
-        st.write("### Cleaned Data Preview")
-        st.dataframe(cleaned_data)
+    st.session_state.upload_result = result
 
-        return dataframes, cleaned_data, result
-    return None, None, None
+    result = st.session_state.upload_result
+    return result
 
 
 def display_generated_graphs(cleaned_data, result):
