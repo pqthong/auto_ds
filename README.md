@@ -29,7 +29,7 @@ This project is an automated data science platform designed to streamline data c
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/data_analyzer.git
+    git clone ...
     cd data_analyzer/auto_ds
     ```
 
